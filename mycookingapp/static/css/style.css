@@ -1,0 +1,35 @@
+* {
+  font-family: "Bebas Neue", cursive;
+}
+
+.category-img {
+  height: 200px;
+  object-fit: cover;
+}
+
+h1 {
+  letter-spacing: 4px;
+}
+
+.search-bar {
+  margin-top: 60px;
+}
+
+.category {
+  margin-bottom: 15px;
+}
+
+/* CENTER PLACEHOLDER TEXT */
+::-webkit-input-placeholder {
+  text-align: center;
+}
+
+.title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 60px;
+  text-shadow: 4px 4px 2px #000000;
+}
