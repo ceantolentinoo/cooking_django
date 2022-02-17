@@ -25,4 +25,7 @@ def italian(request):
         'num': 5,
     }
     return render(request, "italian.html", context)
+
+def recipe(request):
+    return render(request, "recipe.html")
 # Create your views here.
