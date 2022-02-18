@@ -16,8 +16,42 @@ h1 {
   letter-spacing: 4px;
 }
 
+#recipe-tabs {
+  font-size: 20px;
+}
+
+body {
+  background-color: white;
+}
+
+#recipe-tabs .active {
+  background-color: #3b3b3b !important;
+  color: white;
+}
+
+#recipe-tabs a {
+  color: black;
+}
+
+#ingredients span {
+  display: block;
+}
+
+.check {
+  font-size: 25px;
+}
+
+.ingredient-img {
+  height: auto;
+  width: 85px;
+}
+
+.serving {
+  font-size: 25px;
+}
+
 .main {
-  margin-top: 60px;
+  margin-top: 56px;
 }
 
 .category {
@@ -32,7 +66,6 @@ p {
 ::-webkit-input-placeholder {
   text-align: center;
 }
-
 
 .title {
   position: absolute;

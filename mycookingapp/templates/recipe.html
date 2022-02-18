@@ -8,9 +8,25 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"
+  ></script>
+
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/recipe.js' %}"></script>
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -18,6 +34,7 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,7 +46,7 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body>
+  <body class="pb-3">
     <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
       <a class="navbar-brand" href="#">Cooking App</a>
       <button
@@ -63,39 +80,149 @@
     </nav>
 
     <div class="main">
-        <img class="show-img" src="{% static 'img/cuisine-imgs/italian.jpg' %}" alt="">
-        <div class="container">
-            <h2 class="mb-0 mt-1 text-center">Lorem ipsum dolor sit</h1>
-            <p class="text-center text-secondary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dignissim sem velit, nec vehicula purus feugiat eu. Donec sed ante tincidunt, iaculis urna rhoncus, pellentesque massa. Aenean malesuada purus a leo vestibulum suscipit. Pellentesque egestas neque ac euismod rhoncus. Fusce vitae magna leo. Phasellus efficitur tortor</p>
-            <div class="row mt-4">
-                <div class="col-6 text-center">
-                    <i class="fa-solid fa-clock text-danger d-block" style="font-size: 70px;"></i>
-                    <span>Ready in 45 mins</span>
-                </div>
-                <div class="col-6 text-center">
-                    <i class="fa-solid fa-star text-warning d-block" style="font-size: 70px;"></i>
-                    <span>Rated by 1,202 people</span>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary form-control mt-3">Save recipe</button>
+      <h2 class="mb-0 mt-1 text-center p-3">Lorem ipsum dolor sit</h1>
+      <img class="show-img" src="{% static 'img/cuisine-imgs/italian.jpg' %}" alt="">
+      <ul id="recipe-tabs" class="nav nav-pills nav-justified mb-2" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link rounded-0 active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Summary</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link rounded-0" id="ingredients-tab" data-toggle="tab" href="#ingredients" role="tab" aria-controls="ingredients" aria-selected="false">Ingredients</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link rounded-0" id="instructions-tab" data-toggle="tab" href="#instructions" role="tab" aria-controls="instructions" aria-selected="false">Instructions</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <!---------------------- SUMMARY TAB ------------------------------>
+        <div class="tab-pane bg-color fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+          <div class="container bg-white">
+              <p class="text-center text-secondary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dignissim sem velit, nec vehicula purus feugiat eu. Donec sed ante tincidunt, iaculis urna rhoncus, pellentesque massa. Aenean malesuada purus a leo vestibulum suscipit. Pellentesque egestas neque ac euismod rhoncus. Fusce vitae magna leo. Phasellus efficitur tortor</p>
+              <div class="row mt-4">
+                  <div class="col-6 text-center">
+                      <i class="fa-solid fa-clock text-danger d-block" style="font-size: 70px;"></i>
+                      <span>Ready in 45 mins</span>
+                  </div>
+                  <div class="col-6 text-center">
+                      <i class="fa-solid fa-star text-warning d-block" style="font-size: 70px;"></i>
+                      <span>Rated by 1,202 people</span>
+                  </div>
+                  <table class="table table-bordered text-center mt-2">
+                    <thead>
+                      <tr>
+                        <th>Vegetarian</th>
+                        <th>Vegan</th>
+                        <th>Gluten free</th>
+                        <th>Dairy free</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><i class="check fa-solid fa-circle-check text-success"></i></td>
+                        <td><i class="check fa-solid fa-circle-xmark text-danger"></i></td>
+                        <td><i class="check fa-solid fa-circle-check text-success"></i></td>
+                        <td><i class="check fa-solid fa-circle-check text-success"></i></td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+              
+          </div>
         </div>
+        <!-------------------- INGREDIENTS TAB ----------------------->
+        <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
+          <div class="container">
+            <h3 class="d-inline">9 Ingredients</h3>
+            <div class="serving float-right">
+              <i class="fa-solid fa-circle-minus text-danger"></i> &nbsp 6 serving &nbsp <i class="fa-solid fa-circle-plus text-success"></i>
+            </div>
+            <div class="mt-4 text-center">
+              <div class="mb-3">
+                <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
+                <span>2 cups cauliflower</span>
+                <span class="text-secondary">chopped into small pieces</span>
+              </div>
+              <div class="mb-3">
+                <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
+                <span>2 cups cauliflower</span>
+                <span class="text-secondary">chopped into small pieces</span>
+              </div>
+              <div class="mb-3">
+                <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
+                <span>2 cups cauliflower</span>
+                <span class="text-secondary">chopped into small pieces</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!---------------------------------- INSTRUCTIONS TAB  ----------------------------------->
+        <div class="tab-pane fade" id="instructions" role="tabpanel" aria-labelledby="instructions-tab">
+          <div class="container">
+           
+             <div class="mb-2">
+              <h3>Step 1:</h3>
+              <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dignissim sem velit, nec vehicula purus feugiat eu.</span>
+              <div class="row text-center">
+                <div class="col-4">
+                  <h4>Ingredients</h4>
+                  <div class="mb-2">
+                    <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
+                    <span class="d-block">cauliflower</span>
+                  </div>
+                  <div class="mb-2">
+                    <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
+                    <span class="d-block">cauliflower</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <h4>Equipment</h4>
+                  <div class="mb-2">
+                    <img class="ingredient-img" src="{% static 'img/pan.png' %}" alt="">
+                    <span class="d-block">frying pan</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <h4>Length</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <h3>Step 2:</h3>
+              <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dignissim sem velit, nec vehicula purus feugiat eu.</span>
+              <div class="row text-center">
+                <div class="col-4">
+                  <h4>Ingredients</h4>
+                  <div class="mb-2">
+                    <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
+                    <span class="d-block">cauliflower</span>
+                  </div>
+                  <div class="mb-2">
+                    <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
+                    <span class="d-block">cauliflower</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <h4>Equipment</h4>
+                  <div class="mb-2">
+                    <img class="ingredient-img" src="{% static 'img/pan.png' %}" alt="">
+                    <span class="d-block">frying pan</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <h4>Length</h4>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <button type="submit" class="btn btn-primary form-control">Save recipe</button>
+      </div>
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-      crossorigin="anonymous"
-    ></script>
   </body>
 </html>

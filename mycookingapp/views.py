@@ -28,4 +28,3 @@ def italian(request):
 
 def recipe(request):
     return render(request, "recipe.html")
-# Create your views here.
