@@ -80,8 +80,8 @@
     </nav>
 
     <div class="main">
-      <h2 class="mb-0 mt-1 text-center p-3">Lorem ipsum dolor sit</h1>
-      <img class="show-img" src="{% static 'img/cuisine-imgs/italian.jpg' %}" alt="">
+      <h2 class="mb-0 mt-1 text-center p-3">{{title}}</h1>
+      <img class="show-img" src="{{recipeImg}}" alt="">
       <ul id="recipe-tabs" class="nav nav-pills nav-justified mb-2" id="myTab" role="tablist">
         <li class="nav-item">
           <a class="nav-link rounded-0 active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Summary</a>
@@ -97,15 +97,15 @@
         <!---------------------- SUMMARY TAB ------------------------------>
         <div class="tab-pane bg-color fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
           <div class="container bg-white">
-              <p class="text-center text-secondary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dignissim sem velit, nec vehicula purus feugiat eu. Donec sed ante tincidunt, iaculis urna rhoncus, pellentesque massa. Aenean malesuada purus a leo vestibulum suscipit. Pellentesque egestas neque ac euismod rhoncus. Fusce vitae magna leo. Phasellus efficitur tortor</p>
+              <p class="text-center">{{summary | safe}}</p>
               <div class="row mt-4">
                   <div class="col-6 text-center">
                       <i class="fa-solid fa-clock text-danger d-block" style="font-size: 70px;"></i>
-                      <span>Ready in 45 mins</span>
+                      <span>Ready in {{readyInMinutes}}</span>
                   </div>
                   <div class="col-6 text-center">
                       <i class="fa-solid fa-star text-warning d-block" style="font-size: 70px;"></i>
-                      <span>Rated by 1,202 people</span>
+                      <span>Rated by {{rating}} people</span>
                   </div>
                   <table class="table table-bordered text-center mt-2">
                     <thead>
@@ -118,10 +118,34 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td><i class="check fa-solid fa-circle-check text-success"></i></td>
-                        <td><i class="check fa-solid fa-circle-xmark text-danger"></i></td>
-                        <td><i class="check fa-solid fa-circle-check text-success"></i></td>
-                        <td><i class="check fa-solid fa-circle-check text-success"></i></td>
+                        <td>
+                          {% if vegetarian == True %}
+                          <i class="check fa-solid fa-circle-check text-success"></i>
+                          {% else %}
+                          <i class="check fa-solid fa-circle-xmark text-danger"></i>
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if vegan == True %}
+                          <i class="check fa-solid fa-circle-check text-success"></i>
+                          {% else %}
+                          <i class="check fa-solid fa-circle-xmark text-danger"></i>
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if glutenFree == True %}
+                          <i class="check fa-solid fa-circle-check text-success"></i>
+                          {% else %}
+                          <i class="check fa-solid fa-circle-xmark text-danger"></i>
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if dairyFree == True %}
+                          <i class="check fa-solid fa-circle-check text-success"></i>
+                          {% else %}
+                          <i class="check fa-solid fa-circle-xmark text-danger"></i>
+                          {% endif %}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -132,26 +156,18 @@
         <!-------------------- INGREDIENTS TAB ----------------------->
         <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
           <div class="container">
-            <h3 class="d-inline">9 Ingredients</h3>
+            <h3 class="d-inline">{{ingredients|length}} Ingredients</h3>
             <div class="serving float-right">
               <i class="fa-solid fa-circle-minus text-danger"></i> &nbsp 6 serving &nbsp <i class="fa-solid fa-circle-plus text-success"></i>
             </div>
             <div class="mt-4 text-center">
+              {% for ingredient in ingredients %}
               <div class="mb-3">
-                <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
-                <span>2 cups cauliflower</span>
-                <span class="text-secondary">chopped into small pieces</span>
+                <img class="ingredient-img" src="https://spoonacular.com/cdn/ingredients_100x100/{{ingredient.image}}" alt="">
+                <span>{{ingredient.amount}} {{ingredient.unit}} {{ingredient.name}}</span>
+                <span class="text-secondary">{{ingredient.originalName}}</span>
               </div>
-              <div class="mb-3">
-                <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
-                <span>2 cups cauliflower</span>
-                <span class="text-secondary">chopped into small pieces</span>
-              </div>
-              <div class="mb-3">
-                <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
-                <span>2 cups cauliflower</span>
-                <span class="text-secondary">chopped into small pieces</span>
-              </div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -159,61 +175,35 @@
         <div class="tab-pane fade" id="instructions" role="tabpanel" aria-labelledby="instructions-tab">
           <div class="container">
            
+            {% for step in instructions %}
              <div class="mb-2">
-              <h3>Step 1:</h3>
-              <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dignissim sem velit, nec vehicula purus feugiat eu.</span>
+              <h3>Step {{step.number}}:</h3>
+              <span>{{step.step}}</span>
               <div class="row text-center">
                 <div class="col-4">
-                  <h4>Ingredients</h4>
+                  <h5>Ingredients</h5>
+                  {% for ingredient in step.ingredients %}
                   <div class="mb-2">
-                    <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
-                    <span class="d-block">cauliflower</span>
+                    <img class="ingredient-img" style="height: auto; width: 50px;" src="https://spoonacular.com/cdn/ingredients_100x100/{{ingredient.image}}" alt="">
+                    <span class="d-block">{{ingredient.name}}</span>
                   </div>
-                  <div class="mb-2">
-                    <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
-                    <span class="d-block">cauliflower</span>
-                  </div>
+                  {% endfor %}
                 </div>
                 <div class="col-4">
-                  <h4>Equipment</h4>
+                  <h5>Equipment</h5>
+                  {% for equipment in step.equipment %}
                   <div class="mb-2">
-                    <img class="ingredient-img" src="{% static 'img/pan.png' %}" alt="">
-                    <span class="d-block">frying pan</span>
+                    <img class="ingredient-img" style="height: auto; width: 50px;" src="https://spoonacular.com/cdn/equipment_100x100/{{equipment.image}}" alt="">
+                    <span class="d-block">{{equipment.name}}</span>
                   </div>
+                  {% endfor %}
                 </div>
                 <div class="col-4">
-                  <h4>Length</h4>
+                  <h5>Length</h5>
                 </div>
               </div>
             </div>
-
-            <div class="mb-2">
-              <h3>Step 2:</h3>
-              <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dignissim sem velit, nec vehicula purus feugiat eu.</span>
-              <div class="row text-center">
-                <div class="col-4">
-                  <h4>Ingredients</h4>
-                  <div class="mb-2">
-                    <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
-                    <span class="d-block">cauliflower</span>
-                  </div>
-                  <div class="mb-2">
-                    <img class="ingredient-img" src="{% static 'img/cauliflower.jpg' %}" alt="">
-                    <span class="d-block">cauliflower</span>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <h4>Equipment</h4>
-                  <div class="mb-2">
-                    <img class="ingredient-img" src="{% static 'img/pan.png' %}" alt="">
-                    <span class="d-block">frying pan</span>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <h4>Length</h4>
-                </div>
-              </div>
-            </div>
+            {% endfor %}
 
           </div>
         </div>

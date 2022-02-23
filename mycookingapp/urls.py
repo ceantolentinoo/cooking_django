@@ -6,10 +6,14 @@ urlpatterns = [
     path('', views.index),
     # ----- RENDER CUISINE ------ #
     path('cuisine', views.cuisine),
+    # ----- RENDER ITALIAN ------ #
+    path('cuisine/<str:cuisine>/recipes/<int:page>', views.recipesCuisine),
     # ----- RENDER DIET CATEGORY ------ #
     path('diet', views.diet),
-    # ----- RENDER ITALIAN ------ #
-    path('italian', views.italian),
+    # ------- RECIPES PREVIOUS PAGE -------- #
+    path('prev', views.prev),
+    # ------- RECIPES NEXT PAGE -------- #
+    path('next', views.next),
     # ----- RENDER SHOW RECIPE ------ #
-    path('recipe', views.recipe)
+    path('recipe/<int:recipeId>', views.recipe)
 ]

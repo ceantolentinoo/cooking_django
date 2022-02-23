@@ -78,98 +78,55 @@
         </form>
       </div>
       <div class="container">
-        <h1 class="text-center">Italian</h1>
+        <h1 class="text-center">{{cuisine}}</h1>
         <div class="categories">
+          {% for recipe in recipes%}
           <div class="category">
             <div class="card">
               <img
                 class="card-img-top category-img"
-                src="{% static 'img/cuisine-imgs/italian.jpg' %}"
+                src="{{recipe.image}}"
                 alt="Card image cap"
               />
               <div class="card-body bg-dark">
-                <i class="fa-solid fa-clock float-right text-light">2 mins</i>
-                <h5 class="card-title text-light">Title</h5>
-                <a href="#" class="btn btn-primary d-block mb-2">View Recipe</a>
+                <h5 class="card-title text-light">{{recipe.title}}</h5>
+                <a
+                  href="/recipe/{{recipe.id}}"
+                  class="btn btn-primary d-block mb-2"
+                  >View Recipe</a
+                >
                 <a href="#" class="btn btn-success d-block">save recipe</a>
               </div>
             </div>
           </div>
-          <div class="category">
-            <div class="card">
-              <img
-                class="card-img-top category-img"
-                src="{% static 'img/cuisine-imgs/italian.jpg' %}"
-                alt="Card image cap"
-              />
-              <div class="card-body bg-dark">
-                <i class="fa-solid fa-clock float-right text-light">2 mins</i>
-                <h5 class="card-title text-light">Title</h5>
-                <a href="#" class="btn btn-primary d-block mb-2">View Recipe</a>
-                <a href="#" class="btn btn-success d-block">save recipe</a>
-              </div>
-            </div>
-          </div>
-          <div class="category">
-            <div class="card">
-              <img
-                class="card-img-top category-img"
-                src="{% static 'img/cuisine-imgs/italian.jpg' %}"
-                alt="Card image cap"
-              />
-              <div class="card-body bg-dark">
-                <i class="fa-solid fa-clock float-right text-light">2 mins</i>
-                <h5 class="card-title text-light">Title</h5>
-                <a href="#" class="btn btn-primary d-block mb-2">View Recipe</a>
-                <a href="#" class="btn btn-success d-block">save recipe</a>
-              </div>
-            </div>
-          </div>
-          <div class="category">
-            <div class="card">
-              <img
-                class="card-img-top category-img"
-                src="{% static 'img/cuisine-imgs/italian.jpg' %}"
-                alt="Card image cap"
-              />
-              <div class="card-body bg-dark">
-                <i class="fa-solid fa-clock float-right text-light">2 mins</i>
-                <h5 class="card-title text-light">Title</h5>
-                <a href="#" class="btn btn-primary d-block mb-2">View Recipe</a>
-                <a href="#" class="btn btn-success d-block">save recipe</a>
-              </div>
-            </div>
-          </div>
-          <div class="category">
-            <div class="card">
-              <img
-                class="card-img-top category-img"
-                src="{% static 'img/cuisine-imgs/italian.jpg' %}"
-                alt="Card image cap"
-              />
-              <div class="card-body bg-dark">
-                <i class="fa-solid fa-clock float-right text-light">2 mins</i>
-                <h5 class="card-title text-light">Title</h5>
-                <a href="#" class="btn btn-primary d-block mb-2">View Recipe</a>
-                <a href="#" class="btn btn-success d-block">saved recipe</a>
-              </div>
-            </div>
-          </div>
-          <div class="category">
-            <div class="card">
-              <img
-                class="card-img-top category-img"
-                src="{% static 'img/cuisine-imgs/italian.jpg' %}"
-                alt="Card image cap"
-              />
-              <div class="card-body bg-dark">
-                <i class="fa-solid fa-clock float-right text-light">2 mins</i>
-                <h5 class="card-title text-light">Title</h5>
-                <a href="#" class="btn btn-primary d-block mb-2">View Recipe</a>
-                <a href="#" class="btn btn-success d-block">save recipe</a>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
+        </div>
+        <div class="text-center mb-3">
+          {% if prevPage == True %}
+          <form action="/prev" method="post" class="d-inline float-left">
+            {% csrf_token %}
+            <input type="hidden" name="currentPage" value="{{page}}" />
+            <input type="hidden" name="type" value="{{cuisine}}" />
+            <button type="submit" class="btn btn-danger">Prev</button>
+          </form>
+          {% else %}
+          <button class="btn btn-danger float-left" disabled="disabled">
+            Prev
+          </button>
+          {% endif %}
+          <span class="mb-5">page {{page}} of {{totalPages}}</span>
+          {% if nextPage == True %}
+          <form action="/next" method="post" class="d-inline float-right">
+            {% csrf_token %}
+            <input type="hidden" name="currentPage" value="{{page}}" />
+            <input type="hidden" name="type" value="{{cuisine}}" />
+            <button type="submit" class="btn btn-primary">Next</button>
+          </form>
+          {% else %}
+          <button class="btn btn-primary float-left" disabled="disabled">
+            Next
+          </button>
+          {% endif %}
         </div>
       </div>
     </div>
