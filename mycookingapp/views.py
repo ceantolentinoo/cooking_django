@@ -17,10 +17,16 @@ def diet(request):
     return render(request, "diet.html")
 
 # ------------------SHOW CUISINE RECIPES-----------------------
-def recipesCuisine(request, cuisine, page):
+def recipesCuisine(request,category, type, page):
     offset = (page-1) * 10
-    url = f'https://api.spoonacular.com/recipes/complexSearch?instructionsRequired=true&offset={offset}&number=10&cuisine={cuisine}&number=5&apiKey=88aeec238f524b3aafb910b702333739'
+    if category == 'cuisine':
+        url = f'https://api.spoonacular.com/recipes/complexSearch?instructionsRequired=true&offset={offset}&number=10&cuisine={type}&number=5&apiKey=88aeec238f524b3aafb910b702333739'
+    elif category == 'diet':
+        url = f'https://api.spoonacular.com/recipes/complexSearch?instructionsRequired=true&offset={offset}&number=10&diet={type}&number=5&apiKey=88aeec238f524b3aafb910b702333739'
+    else:
+         url = f'https://api.spoonacular.com/recipes/complexSearch?instructionsRequired=true&offset={offset}&number=10&type={type}&number=5&apiKey=88aeec238f524b3aafb910b702333739'
     r = requests.get(url)
+    print(url)
     result = r.json()
     recipes = result['results']
     if result['offset'] == 0:
@@ -47,13 +53,13 @@ def recipesCuisine(request, cuisine, page):
 def prev(request):
     page = int(request.POST['currentPage']) - 1
     cuisine = request.POST['type']
-    return redirect(f'/recipes/{cuisine}/{page}')
+    return redirect(f'/cuisine/{cuisine}/recipes/{page}')
 
 # ----------------- RECIPES NEXT PAGE ----------------- #
 def next(request):
     page = int(request.POST['currentPage']) + 1
     cuisine = request.POST['type']
-    return redirect(f'/recipes/{cuisine}/{page}')
+    return redirect(f'/cuisine/{cuisine}/recipes/{page}')
 
 # ------------------SHOW ONE RECIPE-----------------------
 def recipe(request, recipeId):

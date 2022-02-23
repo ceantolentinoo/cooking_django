@@ -6,8 +6,8 @@ urlpatterns = [
     path('', views.index),
     # ----- RENDER CUISINE ------ #
     path('cuisine', views.cuisine),
-    # ----- RENDER ITALIAN ------ #
-    path('cuisine/<str:cuisine>/recipes/<int:page>', views.recipesCuisine),
+    # ----- SHOW RECIPES BY CUISINE TYPE ------ #
+    path('<str:category>/<str:type>/recipes/<int:page>', views.recipesCuisine),
     # ----- RENDER DIET CATEGORY ------ #
     path('diet', views.diet),
     # ------- RECIPES PREVIOUS PAGE -------- #
