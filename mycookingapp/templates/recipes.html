@@ -64,12 +64,13 @@
 
     <div class="main">
       <div class="p-2 search-bar">
-        <form action="">
+        <form action="/search/search/recipes/1" method="post">
+          {% csrf_token %}
           <div class="form-group m-0">
             <input
               type="text"
               class="form-control"
-              name=""
+              name="search"
               id=""
               aria-describedby="helpId"
               placeholder="Search Recipe"
@@ -106,7 +107,9 @@
           <form action="/prev" method="post" class="d-inline float-left">
             {% csrf_token %}
             <input type="hidden" name="currentPage" value="{{page}}" />
-            <input type="hidden" name="type" value="{{cuisine}}" />
+            <input type="hidden" name="category" value="{{category}}" />
+            <input type="hidden" name="type" value="{{type}}" />
+            <input type="hidden" name="searchKey" value="{{searchKey}}" />
             <button type="submit" class="btn btn-danger">Prev</button>
           </form>
           {% else %}
@@ -119,7 +122,9 @@
           <form action="/next" method="post" class="d-inline float-right">
             {% csrf_token %}
             <input type="hidden" name="currentPage" value="{{page}}" />
-            <input type="hidden" name="type" value="{{cuisine}}" />
+            <input type="hidden" name="category" value="{{category}}" />
+            <input type="hidden" name="type" value="{{type}}" />
+            <input type="hidden" name="searchKey" value="{{searchKey}}" />
             <button type="submit" class="btn btn-primary">Next</button>
           </form>
           {% else %}

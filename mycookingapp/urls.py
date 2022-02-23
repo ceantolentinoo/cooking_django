@@ -16,4 +16,5 @@ urlpatterns = [
     path('next', views.next),
     # ----- RENDER SHOW RECIPE ------ #
     path('recipe/<int:recipeId>', views.recipe)
+    # ------ SEARCH RECIPE --------- #
 ]

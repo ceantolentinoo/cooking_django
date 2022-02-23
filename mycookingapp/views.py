@@ -19,10 +19,17 @@ def diet(request):
 # ------------------SHOW CUISINE RECIPES-----------------------
 def recipesCuisine(request,category, type, page):
     offset = (page-1) * 10
+    if request.method == 'POST':
+        del request.session['searchKey']
     if category == 'cuisine':
         url = f'https://api.spoonacular.com/recipes/complexSearch?instructionsRequired=true&offset={offset}&number=10&cuisine={type}&number=5&apiKey=88aeec238f524b3aafb910b702333739'
     elif category == 'diet':
         url = f'https://api.spoonacular.com/recipes/complexSearch?instructionsRequired=true&offset={offset}&number=10&diet={type}&number=5&apiKey=88aeec238f524b3aafb910b702333739'
+    elif category == 'search':
+        if 'searchKey' not in request.session:
+            request.session['searchKey'] = request.POST['search']
+        search = request.session['searchKey']
+        url = f'https://api.spoonacular.com/recipes/complexSearch?query={search}&offset={offset}&number=10&apiKey=88aeec238f524b3aafb910b702333739'
     else:
          url = f'https://api.spoonacular.com/recipes/complexSearch?instructionsRequired=true&offset={offset}&number=10&type={type}&number=5&apiKey=88aeec238f524b3aafb910b702333739'
     r = requests.get(url)
@@ -40,7 +47,8 @@ def recipesCuisine(request,category, type, page):
         nextPage = False
     context = {
         'num': 5,
-        'cuisine': cuisine,
+        'category': category,
+        'type': type,
         'prevPage': prevPage,
         'nextPage': nextPage,
         'page': page,
@@ -52,14 +60,16 @@ def recipesCuisine(request,category, type, page):
 # ----------------- RECIPES PREVIOUS PAGE ----------------- #
 def prev(request):
     page = int(request.POST['currentPage']) - 1
-    cuisine = request.POST['type']
-    return redirect(f'/cuisine/{cuisine}/recipes/{page}')
+    category = request.POST['category']
+    type = request.POST['type']
+    return redirect(f'/{category}/{type}/recipes/{page}')
 
 # ----------------- RECIPES NEXT PAGE ----------------- #
 def next(request):
     page = int(request.POST['currentPage']) + 1
-    cuisine = request.POST['type']
-    return redirect(f'/cuisine/{cuisine}/recipes/{page}')
+    category = request.POST['category']
+    type = request.POST['type']
+    return redirect(f'/{category}/{type}/recipes/{page}')
 
 # ------------------SHOW ONE RECIPE-----------------------
 def recipe(request, recipeId):
