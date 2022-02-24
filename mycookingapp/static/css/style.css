@@ -1,5 +1,9 @@
-* {
+.bebas-font {
   font-family: "Bebas Neue", cursive;
+}
+
+.user {
+  font-family: 'Josefin Sans', sans-serif;
 }
 
 .category-img {
