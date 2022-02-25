@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 import requests, math
+from django.http import HttpResponseRedirect
 from django.contrib import messages
-from .models import User
+from .models import User, Recipe
 import bcrypt
 
 def index(request):
     if 'userLoggedIn' not in request.session:
         return redirect('/login')
+    print(request.session['userRecipes'])
     return render(request, 'index.html')
 
 def cuisine(request):
@@ -20,9 +22,12 @@ def diet(request):
     return render(request, "diet.html")
 
 # ------------------SHOW CUISINE RECIPES-----------------------
-def recipesCuisine(request,category, type, page):
+def recipes(request,category, type, page):
+    # ------- SESSION BLOCK ------- #
     if 'userLoggedIn' not in request.session:
         return redirect('/login')
+    
+    # -------- QUERY MANAGER -------- #
     offset = (page-1) * 10
     if request.method == 'POST':
         del request.session['searchKey']
@@ -41,6 +46,8 @@ def recipesCuisine(request,category, type, page):
     print(url)
     result = r.json()
     recipes = result['results']
+    print(request.session['userRecipes'])
+    # ------- PAGINATION ----------- #
     if result['offset'] == 0:
         prevPage = False
     else:
@@ -50,6 +57,11 @@ def recipesCuisine(request,category, type, page):
         nextPage = True
     else:
         nextPage = False
+    # -------- GET USER SAVED RECIPES -------- #
+    user = User.objects.get(id=request.session['userLoggedIn'])
+    userRecipes = user.recipes.all()
+    for recipe in userRecipes:
+        request.session['userRecipes'].append(recipe.recipeId)
     context = {
         'num': 5,
         'category': category,
@@ -58,7 +70,8 @@ def recipesCuisine(request,category, type, page):
         'nextPage': nextPage,
         'page': page,
         'recipes': recipes,
-        'totalPages': math.ceil(result['totalResults']/10)
+        'totalPages': math.ceil(result['totalResults']/10),
+        'currentPage': request.path_info,
     }
     return render(request, "recipes.html", context)
 
@@ -98,10 +111,24 @@ def recipe(request, recipeId):
         'glutenFree': recipe['glutenFree'],
         'dairyFree': recipe['dairyFree'],
         'ingredients': recipe['extendedIngredients'],
-        'instructions': recipe['analyzedInstructions'][0]['steps']
+        'instructions': recipe['analyzedInstructions'][0]['steps'],
+        'currentPage': request.path_info
     
     }
     return render(request, "recipe.html", context)
+
+# ------------------ USER SAVE RECIPE ---------------- #
+def saveRecipe(request):
+    user = User.objects.get(id=request.session['userLoggedIn'])
+    new_recipe = Recipe.objects.create(recipeId=int(request.POST['recipeId']), userId=user)
+    return redirect(request.POST['currentPage'])
+
+# ------------------ USER SAVE RECIPE ---------------- #
+def deleteRecipe(request):
+    user = User.objects.get(id=request.session['userLoggedIn'])
+    recipe = user.recipes.get(recipeId=request.POST['recipeId'])
+    recipe.delete()
+    return redirect(request.POST['currentPage'])
 
 # ------------------ SHOW & PROCESS LOGIN ---------------------- #
 def login(request):
@@ -113,6 +140,7 @@ def login(request):
                 if bcrypt.checkpw(request.POST['password'].encode(), user[0].password.encode()):
                     print(user[0].__dict__)
                     request.session['userLoggedIn'] = user[0].__dict__['id']
+                    request.session['userRecipes'] = []
                     return redirect('/')
                 else:
                     messages.add_message(request, messages.ERROR,"Invalid email/password!", extra_tags="loginError")
@@ -124,7 +152,7 @@ def login(request):
 
 # ------------------ LOGOUT --------------------- #
 def logout(request):
-    del request.session['userLoggedIn']
+    del request.session['userLoggedIn'], request.session['userRecipes']
     return redirect('/login')
 
 # ------------------ SHOW & PROCESS REGISTRATION ---------------------- #
@@ -147,3 +175,4 @@ def register(request):
             messages.add_message(request, messages.INFO,"User created!", extra_tags="userCreated")
             return redirect('/login')
     return render(request, 'register.html')
+

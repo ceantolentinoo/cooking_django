@@ -96,21 +96,7 @@
                   class="btn btn-primary d-block mb-2"
                   >View Recipe</a
                 >
-                {% if recipe.id in request.session.userRecipes%}
-                <form action="/delete_recipe" method="POST">
-                  {% csrf_token %}
-                  <input type="hidden" name="recipeId" value="{{recipe.id}}">
-                  <input type="hidden" name="currentPage" value="{{currentPage}}">
-                  <button type="submit" class="btn btn-danger form-control">Remove Recipe</button>
-                </form>                
-                {% else %}
-                <form action="/save_recipe" method="POST">
-                  {% csrf_token %}
-                  <input type="hidden" name="recipeId" value="{{recipe.id}}">
-                  <input type="hidden" name="currentPage" value="{{currentPage}}">
-                  <button type="submit" class="btn btn-success form-control">Save Recipe</button>
-                </form>
-                {% endif %}
+                <a href="#" class="btn btn-success d-block">save recipe</a>
               </div>
             </div>
           </div>

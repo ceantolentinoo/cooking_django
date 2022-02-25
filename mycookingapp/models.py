@@ -20,7 +20,7 @@ class User(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
 
-class SavedRecipes(models.Model):
+class Recipe(models.Model):
     recipeId = models.IntegerField()
     userId = models.ForeignKey(User, related_name="recipes", on_delete = models.CASCADE)
 # Create your models here.
