@@ -93,22 +93,42 @@
                 <h5 class="card-title text-light">{{recipe.title}}</h5>
                 <a
                   href="/recipe/{{recipe.id}}"
-                  class="btn btn-primary d-block mb-2"
+                  class="btn btn-success d-block mb-2"
                   >View Recipe</a
                 >
                 {% if recipe.id in request.session.userRecipes%}
+                <a
+                  name=""
+                  id=""
+                  class="btn btn-primary form-control mb-2"
+                  href="#"
+                  role="button"
+                  >Cook Recipe</a
+                >
                 <form action="/delete_recipe" method="POST">
                   {% csrf_token %}
-                  <input type="hidden" name="recipeId" value="{{recipe.id}}">
-                  <input type="hidden" name="currentPage" value="{{currentPage}}">
-                  <button type="submit" class="btn btn-danger form-control">Remove Recipe</button>
-                </form>                
+                  <input type="hidden" name="recipeId" value="{{recipe.id}}" />
+                  <input
+                    type="hidden"
+                    name="currentPage"
+                    value="{{currentPage}}"
+                  />
+                  <button type="submit" class="btn btn-danger form-control">
+                    Remove Recipe
+                  </button>
+                </form>
                 {% else %}
                 <form action="/save_recipe" method="POST">
                   {% csrf_token %}
-                  <input type="hidden" name="recipeId" value="{{recipe.id}}">
-                  <input type="hidden" name="currentPage" value="{{currentPage}}">
-                  <button type="submit" class="btn btn-success form-control">Save Recipe</button>
+                  <input type="hidden" name="recipeId" value="{{recipe.id}}" />
+                  <input
+                    type="hidden"
+                    name="currentPage"
+                    value="{{currentPage}}"
+                  />
+                  <button type="submit" class="btn btn-primary form-control">
+                    Save Recipe
+                  </button>
                 </form>
                 {% endif %}
               </div>

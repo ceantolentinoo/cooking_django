@@ -73,7 +73,7 @@
             <a class="nav-link" href="#">Save Recipes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/logout">Log Out</a>
+            <a class="nav-link" href="#">Log Out</a>
           </li>
         </ul>
       </div>
@@ -182,24 +182,46 @@
               <div class="row text-center">
                 <div class="col-4">
                   <h5>Ingredients</h5>
+                  {% if step.ingredients|length == 0 %}
+                  <div class="mb-2">
+                    <i class="check fa-solid fa-circle-xmark text-dark" style="font-size: 50px"></i>
+                  </div>
+                  {% else %}
                   {% for ingredient in step.ingredients %}
                   <div class="mb-2">
                     <img class="ingredient-img" style="height: auto; width: 50px;" src="https://spoonacular.com/cdn/ingredients_100x100/{{ingredient.image}}" alt="">
                     <span class="d-block">{{ingredient.name}}</span>
                   </div>
                   {% endfor %}
+                  {% endif %}
                 </div>
                 <div class="col-4">
                   <h5>Equipment</h5>
+                  {% if step.equipment|length == 0 %}
+                  <div class="mb-2">
+                    <i class="check fa-solid fa-circle-xmark text-dark" style="font-size: 50px"></i>
+                  </div>
+                  {% else %}
                   {% for equipment in step.equipment %}
                   <div class="mb-2">
                     <img class="ingredient-img" style="height: auto; width: 50px;" src="https://spoonacular.com/cdn/equipment_100x100/{{equipment.image}}" alt="">
                     <span class="d-block">{{equipment.name}}</span>
                   </div>
                   {% endfor %}
+                  {% endif %}
                 </div>
                 <div class="col-4">
                   <h5>Length</h5>
+                  {% if step.length == null %}
+                  <div class="mb-2">
+                    <i class="check fa-solid fa-circle-xmark text-dark" style="font-size: 50px"></i>
+                  </div>
+                  {% else %}
+                  <div class="mb-2">
+                    <i class="fa-solid fa-clock text-danger d-block" style="font-size: 50px"></i>
+                    <span class="d-block">{{step.length.number}} {{step.length.unit}}</span>
+                  </div>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -209,7 +231,22 @@
         </div>
       </div>
       <div class="container">
-        <button type="submit" class="btn btn-primary form-control">Save recipe</button>
+      {% if recipeId in request.session.userRecipes%}
+      <a name="" id="" class="btn btn-primary form-control mb-2" href="#" role="button">Cook Recipe</a>                
+        <form action="/delete_recipe" method="POST">
+      {% csrf_token %}
+          <input type="hidden" name="recipeId" value="{{recipeId}}">
+          <input type="hidden" name="currentPage" value="{{currentPage}}">
+          <button type="submit" class="btn btn-danger form-control">Remove Recipe</button>
+        </form>
+      {% else %}
+        <form action="/save_recipe" method="POST">
+      {% csrf_token %}
+          <input type="hidden" name="recipeId" value="{{recipeId}}">
+          <input type="hidden" name="currentPage" value="{{currentPage}}">
+          <button type="submit" class="btn btn-success form-control">Save Recipe</button>
+        </form>
+      {% endif %}
       </div>
     </div>
     <!-- Optional JavaScript -->

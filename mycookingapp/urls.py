@@ -13,7 +13,7 @@ urlpatterns = [
     # ------- RECIPES PREVIOUS PAGE -------- #
     path('prev', views.prev),
     # --------- RENDER SAVED RECIPES --------- #
-    # path('saved_recipes', views.saved_recipes),
+    path('saved_recipes', views.savedRecipes),
     # --------- USER SAVE RECIPE --------- #
     path('save_recipe', views.saveRecipe),
     # --------- USER SAVE RECIPE --------- #

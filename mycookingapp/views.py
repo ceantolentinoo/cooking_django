@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect
 import requests, math
 from django.http import HttpResponseRedirect
@@ -100,6 +101,14 @@ def recipe(request, recipeId):
     url = f'https://api.spoonacular.com/recipes/{recipeId}/information?apiKey=88aeec238f524b3aafb910b702333739'
     r = requests.get(url)
     recipe = r.json()
+
+    # -------- GET USER SAVED RECIPES -------- #
+    user = User.objects.get(id=request.session['userLoggedIn'])
+    userRecipes = user.recipes.all()
+    for this_recipe in userRecipes:
+        request.session['userRecipes'].append(this_recipe.recipeId)
+
+
     context = {
         'title': recipe['title'],
         'recipeImg': recipe['image'],
@@ -112,10 +121,28 @@ def recipe(request, recipeId):
         'dairyFree': recipe['dairyFree'],
         'ingredients': recipe['extendedIngredients'],
         'instructions': recipe['analyzedInstructions'][0]['steps'],
-        'currentPage': request.path_info
+        'currentPage': request.path_info,
+        'recipeId': recipeId
     
     }
     return render(request, "recipe.html", context)
+
+def savedRecipes(request):
+    # -------- GET USER SAVED RECIPES -------- #
+    user = User.objects.get(id=request.session['userLoggedIn'])
+    userRecipes = user.recipes.all()
+    url = 'https://api.spoonacular.com/recipes/informationBulk?ids='
+    for this_recipe in userRecipes:
+        url += f'{str(this_recipe.recipeId)},'
+    url += '&apiKey=88aeec238f524b3aafb910b702333739'
+    r= requests.get(url)
+    recipes = r.json()
+
+    context = {
+        'recipes': recipes,
+        'currentPage': request.path_info
+    }
+    return render(request, "saved_recipes.html", context)
 
 # ------------------ USER SAVE RECIPE ---------------- #
 def saveRecipe(request):
